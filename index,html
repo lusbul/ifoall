@@ -1,0 +1,685 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Профільна школа · Інформатична галузь</title>
+<style>
+:root {
+  --bg:#f5f7fc;
+  --ink:#19233c;
+  --muted:#62718a;
+  --line:#dce4f0;
+  --purple:#8059dd;
+  --mint:#11a99d;
+  --orange:#ec943d;
+  --pink:#cf6fa5;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font:16px/1.55 "Segoe UI",Arial,sans-serif;
+}
+button,input { font:inherit; }
+button { cursor:pointer; }
+.wrap { max-width:1180px; margin:auto; padding:0 22px; }
+.hero {
+  color:white;
+  background:
+    radial-gradient(circle at 85% 15%,#315f75 0,transparent 35%),
+    radial-gradient(circle at 15% 80%,#3c286e 0,transparent 40%),
+    #101b34;
+  overflow:hidden;
+}
+.hero-inner {
+  display:grid;
+  grid-template-columns:1.4fr 1fr;
+  align-items:center;
+  gap:30px;
+  min-height:370px;
+  padding-top:54px;
+  padding-bottom:50px;
+}
+.kicker {
+  color:#7ce8d8;
+  font-weight:800;
+  letter-spacing:.15em;
+  font-size:.78rem;
+}
+h1 {
+  font-size:clamp(2.2rem,5vw,4rem);
+  line-height:1.1;
+  margin:18px 0;
+}
+.hero p { color:#d3ddf1; max-width:640px; }
+.stats { display:flex; gap:12px; flex-wrap:wrap; margin-top:26px; }
+.stat {
+  min-width:108px;
+  background:#ffffff14;
+  border:1px solid #ffffff25;
+  border-radius:16px;
+  padding:13px 18px;
+}
+.stat strong { display:block; font-size:1.7rem; color:#91f2e2; }
+.stat span { font-size:.82rem; color:#d5e0f4; }
+.art {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  transform:rotate(-4deg);
+}
+.art-card {
+  background:#ffffff14;
+  border:1px solid #ffffff35;
+  border-radius:22px;
+  min-height:115px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:3.3rem;
+  box-shadow:0 15px 30px #0002;
+}
+.art-card:nth-child(2) { transform:translateY(22px); }
+.art-card:nth-child(3) { transform:translateY(-10px); }
+.intro {
+  padding-top:38px;
+  padding-bottom:10px;
+}
+.intro h2 { font-size:1.7rem; margin:0 0 6px; }
+.intro p { color:var(--muted); margin:0; }
+.toolbar {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:center;
+  padding:24px 0;
+}
+.search {
+  flex:1 1 280px;
+  padding:13px 16px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:white;
+  color:var(--ink);
+  min-width:0;
+}
+.filters { display:flex; flex-wrap:wrap; gap:7px; }
+.filter {
+  border:1px solid var(--line);
+  border-radius:11px;
+  background:white;
+  color:var(--ink);
+  padding:10px 14px;
+}
+.filter.active {
+  background:#172746;
+  color:white;
+  border-color:#172746;
+}
+.module { margin-bottom:28px; }
+.module-head {
+  display:flex;
+  align-items:center;
+  gap:17px;
+  padding:22px;
+  border-radius:20px 20px 0 0;
+  color:white;
+  background:var(--accent);
+}
+.module-icon {
+  font-size:2.2rem;
+  width:65px;
+  height:65px;
+  display:grid;
+  place-items:center;
+  border-radius:17px;
+  background:#ffffff25;
+}
+.module-head small {
+  display:block;
+  font-weight:800;
+  letter-spacing:.12em;
+  opacity:.9;
+}
+.module-head h2 {
+  font-size:1.35rem;
+  line-height:1.25;
+  margin:4px 0;
+}
+.module-head p { margin:0; opacity:.9; font-size:.9rem; }
+.module-count {
+  margin-left:auto;
+  white-space:nowrap;
+  background:#ffffff25;
+  padding:7px 12px;
+  border-radius:20px;
+  font-size:.85rem;
+}
+.topic-list {
+  background:white;
+  border:1px solid var(--line);
+  border-top:0;
+  border-radius:0 0 20px 20px;
+  overflow:hidden;
+}
+.topic + .topic { border-top:1px solid var(--line); }
+.topic-toggle {
+  width:100%;
+  background:white;
+  border:0;
+  display:flex;
+  align-items:center;
+  text-align:left;
+  padding:20px 23px;
+  gap:15px;
+  color:var(--ink);
+}
+.topic-toggle:hover { background:#f7f9fe; }
+.number {
+  background:#f0edfa;
+  color:#6543bc;
+  border-radius:11px;
+  padding:9px 12px;
+  font-weight:800;
+  font-size:.85rem;
+  flex-shrink:0;
+}
+.topic-name { flex:1; font-weight:750; }
+.arrow { color:#8491a6; transition:transform .2s; }
+.topic.open .arrow { transform:rotate(180deg); }
+.topic-body {
+  display:none;
+  background:#f9fbff;
+  padding:4px 23px 22px 73px;
+}
+.topic.open .topic-body { display:block; }
+.topic-description {
+  color:var(--muted);
+  font-size:.91rem;
+  margin:0 0 15px;
+}
+.tasks { display:grid; gap:10px; }
+.task {
+  display:flex;
+  align-items:center;
+  gap:13px;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:13px 15px;
+}
+.task-icon {
+  background:#eaf7f4;
+  color:#168b7c;
+  width:43px;
+  height:43px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  font-size:1.35rem;
+  flex-shrink:0;
+}
+.task-info { flex:1; min-width:0; }
+.task-title { font-weight:750; }
+.task-desc { color:var(--muted); font-size:.85rem; }
+.task-link {
+  background:#172746;
+  color:white;
+  padding:9px 15px;
+  border-radius:10px;
+  text-decoration:none;
+  font-size:.88rem;
+  font-weight:700;
+  white-space:nowrap;
+}
+.task-link:hover { background:#6550bb; }
+.pending {
+  color:#7d8ba1;
+  background:#edf1f7;
+  border-radius:10px;
+  padding:8px 12px;
+  font-size:.8rem;
+  white-space:nowrap;
+}
+.empty {
+  padding:30px;
+  text-align:center;
+  color:var(--muted);
+}
+footer {
+  background:#15213a;
+  color:#d3dded;
+  margin-top:45px;
+  padding:35px 0;
+}
+footer strong { color:white; }
+footer p { margin:5px 0; font-size:.9rem; }
+@media(max-width:720px) {
+  .hero-inner { grid-template-columns:1fr; }
+  .art { display:none; }
+  .module-count { display:none; }
+  .topic-body { padding:8px 14px 20px; }
+  .topic-toggle { padding:15px 13px; gap:9px; }
+  .task { flex-wrap:wrap; }
+  .task-link,.pending { margin-left:auto; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <div class="kicker">IFO · TRAINING HUB</div>
+      <h1>Профільна школа.<br>Інформатична галузь</h1>
+      <p>
+        Простір інтерактивних завдань, практикумів
+        та цифрових інструментів для професійного
+        розвитку вчителів інформатики.
+      </p>
+      <div class="stats">
+        <div class="stat"><strong>04</strong><span>модулі</span></div>
+        <div class="stat"><strong>16</strong><span>тем</span></div>
+        <div class="stat"><strong>∞</strong><span>можливостей</span></div>
+      </div>
+    </div>
+    <div class="art" aria-hidden="true">
+      <div class="art-card">🧩</div>
+      <div class="art-card">💻</div>
+      <div class="art-card">🧠</div>
+      <div class="art-card">🚀</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <h2>Обирайте тему. Досліджуйте. Створюйте.</h2>
+    <p>
+      Кожна тема містить добірку інтерактивних завдань.
+      Каталог поповнюватиметься впродовж тренінгу.
+    </p>
+  </section>
+
+  <div class="toolbar">
+    <input id="search" class="search"
+      type="search"
+      placeholder="🔎 Знайти тему або завдання..."
+      aria-label="Пошук теми або завдання">
+    <div class="filters" id="filters"></div>
+  </div>
+
+  <div id="catalog"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>Профільна школа · Інформатична галузь</strong>
+    <p>Інтерактивні матеріали для тренінгу вчителів</p>
+    <p>Практика · Дослідження · Проєктування · Співпраця</p>
+  </div>
+</footer>
+
+<script>
+/*
+  ЯК ДОДАВАТИ ЗАВДАННЯ
+
+  У потрібній темі знайдіть tasks: [].
+
+  Додайте об'єкт:
+  {
+    title: "Назва завдання",
+    desc: "Короткий опис",
+    icon: "🧩",
+    url: "https://lusbul.github.io/..."
+  }
+
+  Якщо URL ще немає, залиште url: "".
+  Замість кнопки з'явиться "Незабаром".
+
+  Підтримуються абсолютні GitHub Pages URL
+  та відносні адреси, наприклад "ifo07/index.html".
+*/
+
+const modules = [
+  {
+    id: 1,
+    title: "Моделювання змісту інформатичної освіти",
+    subtitle: "НУШ, сучасний зміст і вибіркові курси",
+    icon: "📚",
+    color: "#7656cc",
+    topics: [
+      {
+        title: "НУШ та сучасна інформатична освіта",
+        desc: "Компетентнісні результати та особливості профільної школи.",
+        tasks: [
+          {title:"Інформатика профільної школи: виклики",desc:"Обговорення та аналіз освітніх ситуацій",icon:"🎯",url:""}
+        ]
+      },
+      {
+        title: "Сучасний зміст інформатики",
+        desc: "Актуальні напрями, змістові лінії та професійні контексти.",
+        tasks: [
+          {title:"Карта сучасної інформатики",desc:"Аналіз і систематизація змісту",icon:"🧠",url:""}
+        ]
+      },
+      {
+        title: "Конструктор вибіркових курсів для різних профілів",
+        desc: "Проєктування курсів відповідно до профілю навчання.",
+        tasks: [
+          {title:"Конструктор вибіркового курсу",desc:"Від ідеї до структури курсу",icon:"🛠️",url:""}
+        ]
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: "Викладання та оцінювання",
+    subtitle: "Методики, проєкти, диференціація та оцінювання",
+    icon: "🧩",
+    color: "#119e97",
+    topics: [
+      {
+        title: "Сучасні методики навчання інформатики",
+        desc: "Активне, дослідницьке та проблемне навчання.",
+        tasks: [
+          {title:"Методична лабораторія",desc:"Добір методик до навчальних ситуацій",icon:"🔬",url:""}
+        ]
+      },
+      {
+        title: "Навчальні проєкти та портфоліо учня",
+        desc: "Організація проєктної діяльності та цифрові докази навчання.",
+        tasks: [
+          {title:"Проєктний навігатор",desc:"Планування учнівського ІТ-проєкту",icon:"🚀",url:""}
+        ]
+      },
+      {
+        title: "Диференціація та адаптація навчання",
+        desc: "Різні траєкторії до спільних навчальних результатів.",
+        tasks: [
+          {title:"Одна мета — різні маршрути",desc:"Адаптація навчального завдання",icon:"🧭",url:""}
+        ]
+      },
+      {
+        title: "Компетентнісні завдання",
+        desc: "Стимул, проблема, самостійне рішення та цифровий продукт.",
+        tasks: [
+          {
+            title:"Лабораторія стимулів",
+            desc:"П'ять форм стимулу для компетентнісних ІТ-задач 11 класу",
+            icon:"🎨",
+            url:""
+          },
+          {
+            title:"Конструктор компетентнісного завдання",
+            desc:"Від ситуації до критеріїв оцінювання",
+            icon:"🧩",
+            url:""
+          }
+        ]
+      },
+      {
+        title: "Оцінювання результатів навчання",
+        desc: "Критерії, рубрики, самооцінювання та зворотний зв'язок.",
+        tasks: [
+          {title:"Експертна рада",desc:"Створення та перевірка критеріїв",icon:"⚖️",url:""}
+        ]
+      }
+    ]
+  },
+  {
+    id: 3,
+    title: "Освітній простір академічного ліцею",
+    subtitle: "Етика, штучний інтелект, інструменти й партнерства",
+    icon: "🌐",
+    color: "#e28d39",
+    topics: [
+      {
+        title: "Академічна доброчесність і цифрова етика",
+        desc: "Авторство, цифрова відповідальність і етичні дилеми.",
+        tasks: [
+          {title:"Цифрові дилеми",desc:"Аналіз ситуацій і прийняття рішень",icon:"⚖️",url:""}
+        ]
+      },
+      {
+        title: "Штучний інтелект в освіті",
+        desc: "ШІ як інструмент навчання, професійної діяльності та технологія.",
+        tasks: [
+          {title:"ШІ у професійному процесі",desc:"Практика застосування ШІ",icon:"🤖",url:""}
+        ]
+      },
+      {
+        title: "Цифрові інструменти, платформи та ресурси",
+        desc: "Від окремих сервісів до професійно орієнтованого середовища.",
+        tasks: [
+          {
+            title:"ІТ-команда: від замовлення до продукту",
+            desc:"Проєктування цифрового сервісу",
+            icon:"👥",
+            url:""
+          },
+          {
+            title:"Професійні лабораторії",
+            desc:"Цифрові задачі для різних профілів",
+            icon:"🔬",
+            url:""
+          },
+          {
+            title:"Зміна умов",
+            desc:"Адаптація рішення за нових обмежень",
+            icon:"🎲",
+            url:""
+          }
+        ]
+      },
+      {
+        title: "Зовнішні партнерства",
+        desc: "Співпраця з університетами, бізнесом і громадами.",
+        tasks: [
+          {title:"Карта партнерств",desc:"Планування взаємодії",icon:"🤝",url:""}
+        ]
+      },
+      {
+        title: "Кар'єрна орієнтація та сучасні професії",
+        desc: "Професійні маршрути й сучасний ринок ІТ.",
+        tasks: [
+          {title:"Професійний навігатор",desc:"Аналіз професійних траєкторій",icon:"🧑‍💻",url:""}
+        ]
+      }
+    ]
+  },
+  {
+    id: 4,
+    title: "Підсумковий освітній проєкт",
+    subtitle: "Створення програми, власного курсу та презентація результату",
+    icon: "🚀",
+    color: "#c76d9f",
+    topics: [
+      {
+        title: "Створення власної навчальної програми",
+        desc: "Мета, результати, зміст, діяльність та оцінювання.",
+        tasks: [
+          {title:"Конструктор навчальної програми",desc:"Створення структури документа",icon:"📑",url:""}
+        ]
+      },
+      {
+        title: "Проєктування власного вибіркового курсу",
+        desc: "Практичні модулі та наскрізний учнівський продукт.",
+        tasks: [
+          {title:"Мій вибірковий курс",desc:"Проєктування навчальної траєкторії",icon:"🛠️",url:""}
+        ]
+      },
+      {
+        title: "Фестиваль власних курсів",
+        desc: "Презентація, експертне обговорення та вдосконалення курсів.",
+        tasks: [
+          {title:"Фестиваль курсів",desc:"Представлення підсумкових проєктів",icon:"🎉",url:""}
+        ]
+      }
+    ]
+  }
+];
+
+const catalog = document.getElementById("catalog");
+const search = document.getElementById("search");
+const filters = document.getElementById("filters");
+
+let selectedModule = 0;
+let query = "";
+const expanded = new Set();
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[c]);
+}
+
+function safeURL(url) {
+  if (!url || !url.trim()) return "";
+  try {
+    const parsed = new URL(url, window.location.href);
+    if (parsed.protocol !== "https:" &&
+        parsed.protocol !== "http:") return "";
+    return parsed.href;
+  } catch {
+    return "";
+  }
+}
+
+function topicNumber(moduleIndex, topicIndex) {
+  let n = topicIndex + 1;
+  for (let i = 0; i < moduleIndex; i++) {
+    n += modules[i].topics.length;
+  }
+  return String(n).padStart(2, "0");
+}
+
+function renderFilters() {
+  const options = [
+    {id:0,label:"Усі модулі"},
+    ...modules.map(m => ({id:m.id,label:"Модуль " + m.id}))
+  ];
+  filters.innerHTML = options.map(o => `
+    <button class="filter ${selectedModule===o.id?"active":""}"
+      data-filter="${o.id}"
+      aria-pressed="${selectedModule===o.id}">
+      ${o.label}
+    </button>
+  `).join("");
+
+  filters.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      selectedModule = Number(btn.dataset.filter);
+      render();
+    });
+  });
+}
+
+function taskHTML(task) {
+  const url = safeURL(task.url);
+  return `
+    <div class="task">
+      <div class="task-icon">${escapeHTML(task.icon || "🧩")}</div>
+      <div class="task-info">
+        <div class="task-title">${escapeHTML(task.title)}</div>
+        <div class="task-desc">${escapeHTML(task.desc || "")}</div>
+      </div>
+      ${url
+        ? `<a class="task-link" href="${escapeHTML(url)}"
+            target="_blank" rel="noopener noreferrer">
+            Відкрити ↗
+           </a>`
+        : `<span class="pending">Незабаром</span>`
+      }
+    </div>
+  `;
+}
+
+function render() {
+  renderFilters();
+  const sections = [];
+
+  modules.forEach((module, mi) => {
+    if (selectedModule && module.id !== selectedModule) return;
+
+    const matching = module.topics
+      .map((topic, ti) => ({topic,ti}))
+      .filter(({topic}) => {
+        const searchable = [
+          topic.title, topic.desc,
+          ...topic.tasks.flatMap(t => [t.title,t.desc])
+        ].join(" ").toLowerCase();
+        return searchable.includes(query);
+      });
+
+    if (!matching.length) return;
+
+    const topicsHTML = matching.map(({topic,ti}) => {
+      const key = `${module.id}-${ti}`;
+      const isOpen = expanded.has(key) || Boolean(query);
+      return `
+        <article class="topic ${isOpen?"open":""}">
+          <button class="topic-toggle"
+            data-topic="${key}"
+            aria-expanded="${isOpen}">
+            <span class="number">${topicNumber(mi,ti)}</span>
+            <span class="topic-name">${escapeHTML(topic.title)}</span>
+            <span class="arrow">⌄</span>
+          </button>
+          <div class="topic-body">
+            <p class="topic-description">${escapeHTML(topic.desc)}</p>
+            <div class="tasks">
+              ${topic.tasks.map(taskHTML).join("")}
+            </div>
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    sections.push(`
+      <section class="module" style="--accent:${module.color}">
+        <div class="module-head">
+          <div class="module-icon">${module.icon}</div>
+          <div>
+            <small>МОДУЛЬ ${module.id}</small>
+            <h2>${escapeHTML(module.title)}</h2>
+            <p>${escapeHTML(module.subtitle)}</p>
+          </div>
+          <div class="module-count">${module.topics.length} тем</div>
+        </div>
+        <div class="topic-list">${topicsHTML}</div>
+      </section>
+    `);
+  });
+
+  catalog.innerHTML = sections.join("") ||
+    `<div class="empty">🔎 Нічого не знайдено. Спробуйте інший запит.</div>`;
+
+  catalog.querySelectorAll("[data-topic]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.topic;
+      if (expanded.has(key)) expanded.delete(key);
+      else expanded.add(key);
+      render();
+    });
+  });
+}
+
+search.addEventListener("input", () => {
+  query = search.value.trim().toLowerCase();
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
