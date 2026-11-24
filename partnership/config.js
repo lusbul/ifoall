@@ -1,1 +1,1 @@
-window.PARTNER_ENDPOINT = 'https://script.google.com/macros/s/AKfycby8C8IPz-MMlDzqlVxyceDd6VqVlZwsYv_ckvYMhMSgWL39THceKX8lImD5hkSVEBZ_Jg/exec';
+window.PARTNER_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwv5KG551oMVcC2UDtTjOMy36ix0DgtJptH0J7atdWLsr6ryXY7kfDOA1UCQBWE4T0Vjg/exec';
