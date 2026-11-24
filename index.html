@@ -481,7 +481,7 @@ const modules = [
         title: "Зовнішні партнерства",
         desc: "Співпраця з університетами, бізнесом і громадами.",
         tasks: [
-          {title:"Карта партнерств",desc:"Планування взаємодії",icon:"🤝",url:""}
+          {title:"Карта партнерств",desc:"Розподіл карток та три власні відповіді: реальний досвід, ідея партнерства, мрія. Загальний звіт.",icon:"🤝",url:"./partnership/index.html"}
         ]
       },
       {
@@ -545,6 +545,7 @@ function escapeHTML(value) {
 
 function safeURL(url) {
   if (!url || !url.trim()) return "";
+  if (url === "./partnership/index.html") return url;
   try {
     const parsed = new URL(url, window.location.href);
     if (parsed.protocol !== "https:" &&
